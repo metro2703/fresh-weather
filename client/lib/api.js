@@ -1,10 +1,10 @@
 // import {SERVER_URL} from '../config'
 import Promise from './bluebird'
 
-const QQ_MAP_KEY = 'ZVXBZ-xxxxxxxxxxxxxxxxxxx-RCSVK-LQFU6'
+const QQ_MAP_KEY = '6FABZ-T75KJ-NLAFI-FB47C-66OEO-3ABE6'
 
 wx.cloud.init({
-  env: 'tianqi-xxxxx'
+  env: 'weather-thewall'
 })
 
 const db = wx.cloud.database()
@@ -34,7 +34,7 @@ export const getEmotionByOpenidAndDate = (openid, year, month) => {
   // 这里因为限制 limit20，所以查询两次，一共31条（最多31天）记录
   return new Promise((resolve, reject) => {
     Promise.all([
-      db
+        db
         .collection('diary')
         .where({
           openid,
@@ -43,7 +43,7 @@ export const getEmotionByOpenidAndDate = (openid, year, month) => {
         .orderBy('tsModified', 'desc')
         .limit(15)
         .get(),
-      db
+        db
         .collection('diary')
         .where({
           openid,
@@ -52,7 +52,7 @@ export const getEmotionByOpenidAndDate = (openid, year, month) => {
         .orderBy('tsModified', 'asc')
         .limit(16)
         .get()
-    ])
+      ])
       .then((data) => {
         let [data1, data2] = data
         let set = new Set()
@@ -65,7 +65,9 @@ export const getEmotionByOpenidAndDate = (openid, year, month) => {
           set.add(v._id)
           return true
         })
-        resolve({data})
+        resolve({
+          data
+        })
       })
       .catch((e) => {
         reject(e)

@@ -8,11 +8,14 @@ const $ = require('../../inline/utils')
 /*</remove>*/
 
 exports.main = async (event) => {
-  const {lat,lon} = event
+  const {
+    lat,
+    lon
+  } = event
   let location = `${lat},${lon}`
   let params = {
     location,
-    key: 'XXX' //和风天气中应用的密钥
+    key: 'b858695e450e4eac9ebd16c4189d2fa6' //和风天气中应用的密钥
   }
   let query = []
   for (let i in params) {

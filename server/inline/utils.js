@@ -12,16 +12,16 @@ const STATIC_SERVER_URL = 'https://tianqi-1d3bf9.tcb.qcloud.la'
 const BACKGROUND_PERFIXER = `${STATIC_SERVER_URL}/bg`
 const WEATHER_IMAGE_PERFIXER = `${STATIC_SERVER_URL}/icon`
 
-const KEY = 'xxxxxxxxxxxx'   //和风天气中应用的key名称
-const USER_ID = 'HE18888888888888899' //和风天气中应用的密钥ID
+const KEY = 'b858695e450e4eac9ebd16c4189d2fa6' //和风天气中应用的key名称
+const USER_ID = 'HE19073114292911359' //和风天气中应用的密钥ID
 
-const WECHAT_APPID = 'wx8696xxxxxxxxxce6'
-const WECHAT_APP_SECRET = '12wwwwwxxxxxxxxxxxxxxxx2'
+const WECHAT_APPID = 'wx7c7aeb750cbc26ac'
+// const WECHAT_APP_SECRET = '12wwwwwxxxxxxxxxxxxxxxx2'
 const $ = {
   getWechatAppConfig: () => {
     return {
       id: WECHAT_APPID,
-      sk: WECHAT_APP_SECRET
+      //   sk: WECHAT_APP_SECRET
     }
   },
   airBackgroundColor: (aqi) => {
@@ -39,14 +39,14 @@ const $ = {
     params.username = USER_ID
     let data =
       Object.keys(params)
-        .filter((key) => {
-          return params[key] !== '' && key !== 'sign' && key !== 'key'
-        })
-        .sort()
-        .map((key) => {
-          return `${key}=${params[key]}`
-        })
-        .join('&') + KEY
+      .filter((key) => {
+        return params[key] !== '' && key !== 'sign' && key !== 'key'
+      })
+      .sort()
+      .map((key) => {
+        return `${key}=${params[key]}`
+      })
+      .join('&') + KEY
     return crypto.createHash('md5').update(data).digest('base64')
   },
   getWeatherImage(code, isNight) {
@@ -67,11 +67,11 @@ const $ = {
         m: d.getMinutes(), //minute
         s: d.getSeconds() //second
       }
-    pattern = pattern.replace(/(y+)/gi, function(a, b) {
+    pattern = pattern.replace(/(y+)/gi, function (a, b) {
       return y.substr(4 - Math.min(4, b.length))
     })
     for (let i in o) {
-      pattern = pattern.replace(new RegExp('(' + i + '+)', 'gi'), function(a, b) {
+      pattern = pattern.replace(new RegExp('(' + i + '+)', 'gi'), function (a, b) {
         return o[i] < 10 && b.length > 1 ? '0' + o[i] : o[i]
       })
     }
@@ -272,10 +272,10 @@ const $ = {
     return result
   },
   /**
- * 获取背景色颜色
- * @param {} name
- * @param {*} night
- */
+   * 获取背景色颜色
+   * @param {} name
+   * @param {*} night
+   */
   getBackgroundColor(name, night = 'day') {
     name = `${night}_${name}`
     const map = {
@@ -330,8 +330,18 @@ const $ = {
     return isNight
   },
   _now: (data, _data) => {
-    let {fl, wind_dir, wind_sc, hum, cond_txt, cond_code} = data
-    let {sr, ss} = _data.daily_forecast[0]
+    let {
+      fl,
+      wind_dir,
+      wind_sc,
+      hum,
+      cond_txt,
+      cond_code
+    } = data
+    let {
+      sr,
+      ss
+    } = _data.daily_forecast[0]
     let hours = new Date().getUTCHours() + 8
     if (hours > 24) {
       hours -= 24
@@ -353,7 +363,10 @@ const $ = {
   },
   _hourly: (data, _data) => {
     let hourly = []
-    let {sr, ss} = _data.daily_forecast[0]
+    let {
+      sr,
+      ss
+    } = _data.daily_forecast[0]
 
     for (let i = 0; i < data.length; i++) {
       let r = data[i]
@@ -449,7 +462,12 @@ const $ = {
   handlerData: (data) => {
     if (data && data.HeWeather6 && data.HeWeather6[0].now) {
       let result = data.HeWeather6[0]
-      let {now, daily_forecast, lifestyle, hourly} = result
+      let {
+        now,
+        daily_forecast,
+        lifestyle,
+        hourly
+      } = result
       return {
         status: 0,
         effect: $.getEffectSettings(now.cond_code),

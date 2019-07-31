@@ -1,5 +1,5 @@
 import Promise from './bluebird'
-const QQ_MAP_KEY = 'ZVXBZ-D6JKU-4IRVY-2OHZB-RCSVK-LQFU6'
+const QQ_MAP_KEY = '6FABZ-T75KJ-NLAFI-FB47C-66OEO-3ABE6'
 
 // wx.cloud.init({
 //   env: 'hao-weather-2752f1'
@@ -45,7 +45,9 @@ export const getWeather = (lat, lon) => {
         lon
       },
       success: (res) => {
-        resolve({result: res.data})
+        resolve({
+          result: res.data
+        })
       },
       fail: (e) => {
         reject(e)
@@ -62,7 +64,9 @@ export const jscode2session = (code) => {
         code
       },
       success: (res) => {
-        resolve({result: res.data})
+        resolve({
+          result: res.data
+        })
       },
       fail: reject
     })
@@ -76,7 +80,9 @@ export const getAir = (city) => {
         city
       },
       success: (res) => {
-        resolve({result: res.data})
+        resolve({
+          result: res.data
+        })
       },
       fail: (e) => {
         reject(e)

@@ -11,7 +11,7 @@ exports.main = async (event) => {
   let location = event.city
   let params = {
     location,
-    key: 'XXXXX' //和风天气中应用的密钥
+    key: 'b858695e450e4eac9ebd16c4189d2fa6' //和风天气中应用的密钥
   }
   let query = []
   for (let i in params) {
@@ -29,7 +29,10 @@ exports.main = async (event) => {
           let data = JSON.parse(body)
           // console.log(data)
           if (data && data.HeWeather6 && data.HeWeather6[0].air_now_city) {
-            let {aqi, qlty} = data.HeWeather6[0].air_now_city
+            let {
+              aqi,
+              qlty
+            } = data.HeWeather6[0].air_now_city
             resolve({
               status: 0,
               aqi,

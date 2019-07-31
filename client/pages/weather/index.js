@@ -1,8 +1,19 @@
-import {fixChart, getChartConfig, drawEffect} from '../../lib/utils'
+import {
+  fixChart,
+  getChartConfig,
+  drawEffect
+} from '../../lib/utils'
 import Chart from '../../lib/chartjs/chart'
 /*<remove trigger="prod">*/
-import {getEmotionByOpenidAndDate, getMood, geocoder} from '../../lib/api'
-import {getWeather, getAir} from '../../lib/api-mock'
+import {
+  getEmotionByOpenidAndDate,
+  getMood,
+  geocoder
+} from '../../lib/api'
+import {
+  getWeather,
+  getAir
+} from '../../lib/api-mock'
 /*</remove>*/
 
 /*<jdists trigger="prod">
@@ -64,7 +75,13 @@ Page({
         duration: 3000
       })
     }
-    const {lat, lon, province, city, county} = this.data
+    const {
+      lat,
+      lon,
+      province,
+      city,
+      county
+    } = this.data
     getWeather(lat, lon)
       .then((res) => {
         wx.hideLoading()
@@ -97,7 +114,9 @@ Page({
         let tips = result.tips.observe
         let index = Math.floor(Math.random() * Object.keys(tips).length)
         tips = tips[index]
-        this.setData({tips})
+        this.setData({
+          tips
+        })
       }
     })
   },
@@ -125,11 +144,19 @@ Page({
         // console.log(1, res, result)
 
         if (res.statusCode === 200 && result && result.address) {
-          let {address, formatted_addresses, address_component} = result
+          let {
+            address,
+            formatted_addresses,
+            address_component
+          } = result
           if (formatted_addresses && (formatted_addresses.recommend || formatted_addresses.rough)) {
             address = formatted_addresses.recommend || formatted_addresses.rough
           }
-          let {province, city, district: county} = address_component
+          let {
+            province,
+            city,
+            district: county
+          } = address_component
           this.setData({
             province,
             county,
@@ -146,7 +173,11 @@ Page({
     )
   },
   updateLocation(res) {
-    let {latitude: lat, longitude: lon, name} = res
+    let {
+      latitude: lat,
+      longitude: lon,
+      name
+    } = res
     let data = {
       lat,
       lon
@@ -170,8 +201,14 @@ Page({
   chooseLocation() {
     wx.chooseLocation({
       success: (res) => {
-        let {latitude, longitude} = res
-        let {lat, lon} = this.data
+        let {
+          latitude,
+          longitude
+        } = res
+        let {
+          lat,
+          lon
+        } = this.data
         if (latitude == lat && lon == longitude) {
           this.getWeatherData()
         } else {
@@ -189,7 +226,9 @@ Page({
   },
   onLocation() {
     wx.getSetting({
-      success: ({authSetting}) => {
+      success: ({
+        authSetting
+      }) => {
         can = authSetting['scope.userLocation']
         if (can) {
           this.chooseLocation()
@@ -200,7 +239,10 @@ Page({
     })
   },
   indexDetail(e) {
-    const {name, detail} = e.currentTarget.dataset
+    const {
+      name,
+      detail
+    } = e.currentTarget.dataset
     wx.showModal({
       title: name,
       content: detail,
@@ -226,9 +268,15 @@ Page({
     const currentPage = pages[pages.length - 1] //获取当前页面的对象
     const query = currentPage.options
     if (query && query.address && query.lat && query.lon) {
-      let {province, city, county, address, lat, lon} = query
-      this.setData(
-        {
+      let {
+        province,
+        city,
+        county,
+        address,
+        lat,
+        lon
+      } = query
+      this.setData({
           city,
           province,
           county,
@@ -268,7 +316,14 @@ Page({
         path: '/pages/weather/index'
       }
     } else {
-      const {lat, lon, address, province, city, county} = this.data
+      const {
+        lat,
+        lon,
+        address,
+        province,
+        city,
+        county
+      } = this.data
       let url = `/pages/weather/index?lat=${lat}&lon=${lon}&address=${address}&province=${province}&city=${city}&county=${county}`
 
       return {
@@ -282,9 +337,22 @@ Page({
   render(data) {
     isUpdate = true
     // console.log(data)
-    const {width, scale} = this.data
-    const {hourly, daily, current, lifeStyle, oneWord = '', effect} = data
-    const {backgroundColor, backgroundImage} = current
+    const {
+      width,
+      scale
+    } = this.data
+    const {
+      hourly,
+      daily,
+      current,
+      lifeStyle,
+      oneWord = '',
+      effect
+    } = data
+    const {
+      backgroundColor,
+      backgroundImage
+    } = current
 
     const _today = daily[0],
       _tomorrow = daily[1]
@@ -327,7 +395,16 @@ Page({
     this.dataCache()
   },
   dataCache() {
-    const {current, backgroundColor, backgroundImage, today, tomorrow, address, tips, hourlyData} = this.data
+    const {
+      current,
+      backgroundColor,
+      backgroundImage,
+      today,
+      tomorrow,
+      address,
+      tips,
+      hourlyData
+    } = this.data
     wx.setStorage({
       key: 'defaultData',
       data: {
@@ -345,10 +422,21 @@ Page({
   setDataFromCache() {
     wx.getStorage({
       key: 'defaultData',
-      success: ({data}) => {
+      success: ({
+        data
+      }) => {
         if (data && !isUpdate) {
           // 存在并且没有获取数据成功，那么可以给首屏赋值上次数据
-          const {current, backgroundColor, backgroundImage, today, tomorrow, address, tips, hourlyData} = data
+          const {
+            current,
+            backgroundColor,
+            backgroundImage,
+            today,
+            tomorrow,
+            address,
+            tips,
+            hourlyData
+          } = data
           this.setData({
             current,
             backgroundColor,
@@ -402,7 +490,11 @@ Page({
     }
   },
   drawChart() {
-    const {width, scale, weeklyData} = this.data
+    const {
+      width,
+      scale,
+      weeklyData
+    } = this.data
     let height = CHART_CANVAS_HEIGHT * scale
     let ctx = wx.createCanvasContext('chart')
     fixChart(ctx, width, height)
